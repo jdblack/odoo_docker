@@ -5,7 +5,6 @@ set -e
 ####
 # Common options
 ####
-
 # specify alternate config file (default None)
 export ODOO_CONFIG="${ODOO_CONFIG:-}"
 

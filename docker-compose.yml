@@ -3,6 +3,9 @@ services:
     build:
       context: ./src
       dockerfile: Dockerfile
+      secrets:
+        - source: gh_token
+          target: GH_TOKEN
     ports:
       - "8069:8069"
     environment:
@@ -29,6 +32,9 @@ services:
       - pg_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+secrets:
+  gh_token:
+    environment: GH_TOKEN
 volumes:
   odoo_data:
   pg_data:
