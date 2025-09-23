@@ -23,7 +23,6 @@ env:
 
 jobs:
   build-and-push:
-    if: github.event_name != 'push' || github.ref_name == matrix.branch
     runs-on: ubuntu-latest
     concurrency:
       group: docker-${{ matrix.branch }}
