@@ -84,8 +84,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=${{ matrix.branch }},enable=true
-            type=sha,prefix=${{ matrix.branch }}-,enable=true
-            type=date,pattern=20060102,prefix=${{ matrix.branch }}-,enable=true
 
       - name: Build and push multi-arch Docker image
         if: github.event_name != 'pull_request'
