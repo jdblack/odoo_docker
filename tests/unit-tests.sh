@@ -15,8 +15,8 @@ export TESTS_DB_HOST=${TESTS_DB_HOST:-"${TESTS_POSTGRES_CONTAINER_NAME}"}
 export TESTS_DB_USER=${TESTS_DB_USER:-"odoo"}
 export TESTS_DB_PASSWORD=${TESTS_DB_PASSWORD:-"odoo"}
 export TESTS_DB_NAME=${TESTS_DB_NAME:-"testing"}
-export TESTS_TEST_TAGS=${TESTS_TEST_TAGS:-"-/base:TestRealCursor.test_connection_readonly,-/base:test_search.test_13_m2o_order_loop_multi,-/base:test_signaling_01_multiple"}
-export TESTS_SKIP_BUILD=${TESTS_SKIP_BUILD:-"true"}
+export TESTS_TEST_TAGS=${TESTS_TEST_TAGS:-"-/base:TestRealCursor.test_connection_readonly,-/base:test_search.test_13_m2o_order_loop_multi,-/TestOrmCache:test_signaling_01_multiple"}
+export TESTS_SKIP_BUILD=${TESTS_SKIP_BUILD:-"false"}
 export ODOO_VERSION=${ODOO_VERSION:-"19.0"}
 
 # Ensure we do not have a lingering odoo_testing_db
