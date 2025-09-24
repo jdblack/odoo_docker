@@ -178,7 +178,7 @@ COPY --from=geolite /geolite /usr/share/GeoIP
 RUN npm install --force -g rtlcss@3.4.0
 
 # Create the data locations used by default, and create a default empty configuration file at _generated.conf
-RUN mkdir -p /volumes/config /volumes/data /volumes/addons /volumes/enterprise /volumes/extra_addons \
+RUN mkdir -p /volumes/config /volumes/data /volumes/addons \
     && echo "[options]" > /volumes/config/_generated.conf
 
 # The /venv folder will house our Python virtual environment
@@ -256,7 +256,7 @@ COPY --from=source /source/odoo/ .
 
 # Install Odoo into the venv
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --no-cache-dir -e .
+    pip install --no-cache-dir .
 
 # Add odoo-bin to the global applications
 RUN chmod +x /odoo/odoo-bin \

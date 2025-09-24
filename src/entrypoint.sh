@@ -266,16 +266,18 @@ export ODOO_LIMIT_REQUEST=${ODOO_LIMIT_REQUEST:-65536}
 # Docker Specific configuration
 IMAGE_ODOO_ENTERPRISE_LOCATION="${IMAGE_ODOO_ENTERPRISE_LOCATION:-/volumes/enterprise}"
 
-# If the enterprise folder exists, add it to the ODOO_ADDONS_PATH
-if [ -d "${IMAGE_ODOO_ENTERPRISE_LOCATION}" ]; then
-    echo "Odoo Enterprise has been detected"
+# If the enterprise folder is NON-EMPTY, add it to ODOO_ADDONS_PATH
+if [ -d "$IMAGE_ODOO_ENTERPRISE_LOCATION" ] && \
+   [ -n "$(find "$IMAGE_ODOO_ENTERPRISE_LOCATION" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]; then
+  echo "Odoo Enterprise detected with content"
 
-    if [ -z "$ODOO_ADDONS_PATH" ]; then
-        export ODOO_ADDONS_PATH="$IMAGE_ODOO_ENTERPRISE_LOCATION"
-    else
-        export ODOO_ADDONS_PATH="$ODOO_ADDONS_PATH,$IMAGE_ODOO_ENTERPRISE_LOCATION"
-    fi
+  if [ -z "$ODOO_ADDONS_PATH" ]; then
+    export ODOO_ADDONS_PATH="$IMAGE_ODOO_ENTERPRISE_LOCATION"
+  else
+    export ODOO_ADDONS_PATH="$ODOO_ADDONS_PATH,$IMAGE_ODOO_ENTERPRISE_LOCATION"
+  fi
 fi
+
 
 # If the enterprise folder exists, add it to the ODOO_ADDONS_PATH
 if [ -d "${IMAGE_EXTRA_ADDONS_LOCATION}" ]; then
