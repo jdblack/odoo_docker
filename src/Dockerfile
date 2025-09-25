@@ -22,30 +22,6 @@ RUN --mount=type=cache,target=/root/.cache/git \
     --depth 1  \
     ${ODOO_REPOSITORY}
 
-FROM alpine AS enterprise
-
-ARG ODOO_ENTERPRISE_VERSION=19.0
-ARG ODOO_ENTERPRISE_REPOSITORY=odoo/enterprise
-
-RUN apk add --no-cache git ca-certificates && update-ca-certificates
-WORKDIR /source
-
-# Optional clone: runs only if GH_TOKEN secret is provided
-# We keep the explanatory style: this lets private enterprise builds succeed without leaking tokens
-RUN --mount=type=secret,id=GH_TOKEN \
-    set -eu; \
-    if [ -s /run/secrets/GH_TOKEN ]; then \
-      echo "Cloning ${ODOO_ENTERPRISE_REPOSITORY} branch ${ODOO_ENTERPRISE_VERSION}"; \
-      git -c credential.helper= clone \
-        --branch "${ODOO_ENTERPRISE_VERSION}" \
-        --single-branch --depth 1 \
-        "https://oauth2:$(cat /run/secrets/GH_TOKEN)@github.com/${ODOO_ENTERPRISE_REPOSITORY}" \
-        /enterprise; \
-    else \
-      echo "No GH_TOKEN provided; skipping clone."; \
-      mkdir -p /enterprise; \
-    fi
-
 # This build step will go download the latest version
 # of wkhtmltopdf (keep your eyes on https://github.com/odoo/paper-muncher)
 FROM alpine/curl AS wkhtmltox
