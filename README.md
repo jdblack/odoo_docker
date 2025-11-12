@@ -51,9 +51,9 @@ docker pull ghcr.io/adomi-io/odoo:18.0
 
 
 | Odoo                                               | Pull Command                                 |
-|-|-|
-| [18.0](https://github.com/adomi-io/odoo/tree/18.0) | ```docker pull ghcr.io/adomi-io/odoo:18.0``` |
-| [17.0](https://github.com/adomi-io/odoo/tree/17.0) | ```docker pull ghcr.io/adomi-io/odoo:17.0``` |
+|----------------------------------------------------|----------------------------------------------|
+| [19.0](https://github.com/adomi-io/odoo/tree/18.0) | ```docker pull ghcr.io/adomi-io/odoo:19.0``` |
+| [18.0](https://github.com/adomi-io/odoo/tree/17.0) | ```docker pull ghcr.io/adomi-io/odoo:18.0``` |
 
 ## Run this container
 
