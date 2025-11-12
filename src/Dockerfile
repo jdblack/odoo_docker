@@ -234,6 +234,11 @@ COPY --from=source /source/odoo/ .
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --no-cache-dir .
 
+
+# Odoo requires pypdf2<3.0. PyPDF2 is deprecated, and there is work in the upstream to fix this
+RUN pip install "pypdf2<3.0"
+
+
 # Add odoo-bin to the global applications
 RUN chmod +x /odoo/odoo-bin \
  && ln -sf /odoo/odoo-bin /usr/local/bin/odoo-bin \
