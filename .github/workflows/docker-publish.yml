@@ -18,7 +18,7 @@ env:
   REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   IMAGE_NAME: ${{ github.repository }}
   SKIP_UNIT_TESTS: false
-  TARGET_PLATFORMS: amd64,arm64
+  TARGET_PLATFORMS: amd64
 
 jobs:
   build-and-push:
@@ -56,7 +56,6 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.branch }}-test
           push: false
           load: true
-          cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Run unit tests
@@ -95,8 +94,4 @@ jobs:
             ODOO_VERSION=${{ matrix.branch }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: |
-            type=gha,src=/tmp/.buildx-cache
-          cache-to: |
-            type=gha,dest=/tmp/.buildx-cache
           push: true
