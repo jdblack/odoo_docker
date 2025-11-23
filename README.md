@@ -432,17 +432,15 @@ COPY ./oca/addons /volumes/extra_addons
 
 # Dynamic Configuration
 
-> [!TIP]
+> [!NOTE]
 > This Docker image uses `envsubst` to generate an `odoo.conf` file based on your environment variables. 
 > This means you can configure Odoo at every stage of the image's lifecycle. Build values into your image, 
 > set them at runtime via a mounted file, or pass them through environment variables in your cloud provider's UI.
 
-This documentation will guide you through extending your Odoo instances configuration.
-
-## Default Odoo Configuration File
-
 > [!TIP]
 > You can enable any configuration option to be driven by environment variables by uncommenting it in the [`odoo.conf`](./src/odoo.conf) file.
+
+## Default Odoo Configuration File
 
 This image includes a default Odoo configuration that you can override, modify, or hardcode as needed.
 
