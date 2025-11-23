@@ -621,7 +621,7 @@ COPY odoo.conf /volumes/config/odoo.conf
 ENV ODOO_WORKERS=5
 ```
 
-## Setup Hook
+# Setup Hook
 > [!TIP]
 > This feature is useful for automatically installing apps when the container first starts
 >
