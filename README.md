@@ -1,3 +1,8 @@
+> [!TIP]
+> Want to see a project build with this image? 
+> Check out [Listing Lab](https://github.com/adomi-io/listing-lab) for a complete example
+
+
 <p align="center">
     <img src="static/repo_header_final.png" width="580" />
 </p>
@@ -5,16 +10,20 @@
 
 # Adomi-io - Odoo
 
-> [!TIP]
-> Want to see a project build with this image? 
-> Check out [Listing Lab](https://github.com/adomi-io/listing-lab) for a complete example
+This image is designed for developers, infrastructure teams, and companies that want to deploy 
+Odoo on cloud platforms, build SaaS or IaaS products around it, or use Odoo as the foundation 
+for their own custom software.
 
-This image is built for developers, infrastructure teams, and companies looking to deploy Odoo 
-on cloud platforms or offer Odoo as a basis for their own custom software, built with a transparent, open-source, 
-and community-supported stack.
+This image exists to turn Odoo into a repeatable, shippable unit. 
+Your code, your addons, your config, all baked into one container 
+that runs the same on a laptop, a staging box, or a cloud cluster 
+which you can deploy with a single command.
 
-Run Odoo with a single command or build your own base-image to customize Odoo for your needs, or bundled
-with your own custom addons.
+You get a clean development environment that works with modern IDEs, 
+supports breakpoints, and mirrors production. When you are ready to 
+deploy, the same image goes to your cloud or on-premise deployments, 
+without surprise differences between environments.
+
 
 > [!WARNING]
 > This is not the official Odoo image. This image is a community-maintained Odoo image.
@@ -25,7 +34,7 @@ with your own custom addons.
 > [!INFO]
 > Adomi is an Odoo partner and consulting company. This image serves as a foundation for our open-source Odoo projects.
 > We offer custom software development, consulting, tools, and training services built
-> for modern software development teams.
+> for modern software development teams using open-source tools.
 
 # Highlights
 
@@ -51,16 +60,23 @@ and scaling your instances effortlessly.
 
 ### Docker Compose
 
-This Docker Compose file will launch a copy of Odoo along with a Postgres database.
+This Docker Compose file will launch a copy of Odoo along 
+with a Postgres database. Use this to get started.
 
-See the [docker-compose.yml](./docker/docker-compose.yml) for more information
+Copy this file to a folder:
+
+[docker-compose.yml](./docker/docker-compose.yml)
+
+Then run `docker compose up`
 
 ```yaml
 services:
   odoo:
     image: ghcr.io/adomi-io/odoo:19.0
+    restart: unless-stopped 
     ports:
       - "8069:8069"
+      - "8072:8072"
     environment:
       # Configure your instances
       ODOO_DB_HOST: ${DB_HOST:-db}
@@ -104,50 +120,39 @@ volumes:
   pg_data:
 ```
 
-### Docker
 
-#### Start a `Postgres` image
-
-```bash
-docker run -d \
-  --name odoo_db \
-  -e POSTGRES_USER=odoo \
-  -e POSTGRES_PASSWORD=odoo \
-  -e POSTGRES_DB=postgres \
-  -p 5432:5432 \
-  postgres:13
-```
-#### Start an `Odoo` image
-```bash
-docker run --name odoo \
-  -p 8069:8069 \
-  -e ODOO_DB_HOST=odoo_db \
-  -e ODOO_DB_PORT=5432 \
-  -e ODOO_DB_USER=odoo \
-  -e ODOO_DB_PASSWORD=odoo \
-  ghcr.io/adomi-io/odoo:19.0
-```
-
-Start your images by running
-```shell
-docker compose up
-```
-
-If you want to always have Odoo running, you can add the following to your docker-compose.yml:
-
-```yml
-services:
-  odoo:
-    image: ghcr.io/adomi-io/odoo:19.0
-    restart: unless-stopped 
-    # ...
-```
-
-then start the image in daemon mode by adding the `-d` flag
+If you want to always have Odoo running, 
+start the image in detached mode by adding the `-d` flag
 
 ```shell
 docker compose up -d
 ```
+
+### Docker
+This is a simple example of how to run Odoo with Postgres if you are using Docker directly, without Docker Compose.
+
+#### Start an `Odoo` image
+```bash
+docker run --name odoo \
+  -p 8069:8069 \
+  -e ODOO_DB_HOST=your-postgres-host \
+  -e ODOO_DB_USER=your-postgres-user \
+  -e ODOO_DB_PASSWORD=your-postgres-password \
+  -e ODOO_DB_PORT=5432 \
+  ghcr.io/adomi-io/odoo:19.0
+```
+
+> [!TIP]
+> If you need a postgres database, you can run the following command to start a postgres container
+> ```bash
+> docker run -d \
+>  --name odoo_db \
+>  -e POSTGRES_USER=odoo \
+>  -e POSTGRES_PASSWORD=odoo \
+>  -e POSTGRES_DB=postgres \
+>  -p 5432:5432 \
+>  postgres:13
+> ``` 
 
 # Update your image
 
@@ -165,23 +170,13 @@ docker pull ghcr.io/adomi-io/odoo:19.0
 | [19.0](https://github.com/adomi-io/odoo/tree/19.0) | ```docker pull ghcr.io/adomi-io/odoo:19.0``` |
 | [18.0](https://github.com/adomi-io/odoo/tree/18.0) | ```docker pull ghcr.io/adomi-io/odoo:18.0``` |
 
-# Logging into container
-
-Need to jump into your image like you would via SSH? With Docker Compose, it's as simple as:
-
-```shell
-docker compose exec odoo /bin/bash
-```
-
-This command drops you right into the image's shell for quick debugging or tweaks.
-
 # Configure your container
 Manage your configuration in a `.env` file.
 
 > [!TIP]
 >  This lets you run multiple different environments (e.g., development, staging, production) with ease.
 
-By placing your sensitive data in this file and adding it to your .gitignore, 
+By placing your sensitive data in this file and adding it to your `.gitignore`, 
 you keep secrets out of your command line and source code.
 
 ## Docker Compose
@@ -205,6 +200,14 @@ services:
 When you run `docker compose up`, Docker Compose will load the environment variables from the specified file, keeping your configuration tidy and secure.
 
 Using an `.env` file makes it easy to manage environment-specific settings and ensures your sensitive data isn’t hard-coded into your commands or configuration files. 
+
+> [!TIP]
+> You can change the .env file to quickly change between environments or customers.
+> For example, you can create a `.env.production` file for production deployments.
+
+> [!TIP]
+> If you use Docker BuildKit, you do not need to specify the `env_file` 
+> directive in your `docker-compose.yml` file if the file is named `.env`.
 
 ## Docker
 
@@ -280,15 +283,26 @@ docker run --name odoo \
   ghcr.io/adomi-io/odoo:19.0
 ```
 
-# Extending This Image
+# Logging into container
 
-Customize your own image by setting default environment variables,
-baking your Odoo config, and adding your custom addons. 
-You can even pre-build an image with Odoo Enterprise!
+Need to jump into your image like you would via SSH? With Docker Compose, it's as simple as:
+
+```shell
+docker compose exec odoo /bin/bash
+```
+
+This command drops you right into the image's shell for quick debugging or tweaks.
+
+# Extending This Image
 
 > [!TIP]
 > Want to see a project which extends with this image? 
 > Check out [Listing Lab](https://github.com/adomi-io/listing-lab) for a complete example
+
+
+Customize your own image by setting default environment variables,
+baking your Odoo config, and adding your custom addons. 
+You can even pre-build an image with Odoo Enterprise!
 
 ### Create a Custom Dockerfile
 
@@ -488,13 +502,13 @@ limit_time_cpu = $ODOO_LIMIT_TIME_CPU
 limit_time_real = $ODOO_LIMIT_TIME_REAL
 ```
 
-## Overriding configuration options at runtime
+# Overriding configuration options at runtime
 
 > [!TIP]
-> You can enable any configuration option by uncommenting it in the [`odoo.conf`](./src/odoo.conf) file.
+> You can enable any configuration option to be driven by environment variables by uncommenting it in the [`odoo.conf`](./src/odoo.conf) file.
 
 
-### Docker
+## Docker
 
 Simply set the configuration options using the `-e` flag, prefixing the option name with `ODOO_`. For example, to set the number of workers:
 
@@ -509,7 +523,7 @@ docker run --name odoo \
   ghcr.io/adomi-io/odoo:19.0
 ```
 
-### Docker Compose
+## Docker Compose
 
 You can also set these options in your `docker-compose.yml` file:
 
@@ -527,11 +541,14 @@ services:
       # For example, setting the number of workers:
       ODOO_WORKERS: 5
 ```
-## Use Your Own odoo.conf
+# Create your own dynamic `odoo.conf`
 
-#### Step 1: Create an `odoo.conf` File
+## Step 1: Create an `odoo.conf` File
 
-Create a file in your project's folder called `odoo.conf`. We recommend copying the [default odoo.conf file provided with this image](./src/odoo.conf) and then modifying it with the values you want to use.
+Create a file in your project's folder called `odoo.conf`. We typically store these in a folder called `config`
+
+We recommend copying the [default odoo.conf file provided with this image](./src/odoo.conf)
+and then modifying it with the values you want to use.
 
 For example:
 
@@ -549,21 +566,9 @@ addons_path = $ODOO_ADDONS_PATH
 data_dir = $ODOO_DATA_DIR
 ```
 
-#### Step 2: Mount the Configuration File
+## Step 2: Mount the Configuration File
 
-##### Docker
-
-Add the `-v $(pwd)/odoo.conf:/volumes/config/odoo.conf` flag to your `docker run` command. For example:
-
-```shell
-docker run -d \
-  --name odoo \
-  -p 8069:8069 \
-  -v $(pwd)/odoo.conf:/volumes/config/odoo.conf \
-  ghcr.io/adomi-io/odoo:19.0
-```
-
-##### Docker Compose
+## Docker Compose
 
 To use your custom configuration file with Docker Compose, update your `docker-compose.yml` to mount it at `/volumes/config/odoo.conf`:
 
@@ -573,7 +578,19 @@ services:
     image: ghcr.io/adomi-io/odoo:19.0
     # ...
     volumes:
-      - ./odoo.conf:/volumes/config/odoo.conf # Add this to your docker compose configuration
+      - ./config/odoo.conf:/volumes/config/odoo.conf # Add this to your docker compose configuration
+```
+
+### Docker
+
+Add the `-v $(pwd)/config/odoo.conf:/volumes/config/odoo.conf` flag to your `docker run` command. For example:
+
+```shell
+docker run -d \
+  --name odoo \
+  -p 8069:8069 \
+  -v $(pwd)/odoo.conf:/volumes/config/odoo.conf \
+  ghcr.io/adomi-io/odoo:19.0
 ```
 
 ## Environment Variable Defaults
@@ -581,86 +598,12 @@ services:
 The Dockerfile is built with a set of default environment variables. If you do not override these variables when deploying 
 your Odoo image, the defaults will be used. For more details, check the [Dockerfile](./src/Dockerfile).
 
-
 ```dockerfile
 ENV ODOO_CONFIG="/volumes/config/_generated.conf" \
     ODOO_ADDONS_PATH="/odoo/addons,/volumes/addons" \
-    ODOO_SAVE="False" \
-    ODOO_INIT="" \
-    ODOO_UPDATE="" \
-    ODOO_WITHOUT_DEMO="False" \
-    ODOO_IMPORT_PARTIAL="" \
-    ODOO_PIDFILE="" \
-    ODOO_UPGRADE_PATH="" \
-    ODOO_SERVER_WIDE_MODULES="base,web" \
-    ODOO_DATA_DIR="/volumes/data" \
-    ODOO_HTTP_INTERFACE="" \
-    ODOO_HTTP_PORT="8069" \
-    ODOO_GEVENT_PORT="8072" \
-    ODOO_HTTP_ENABLE="True" \
-    ODOO_PROXY_MODE="False" \
-    ODOO_X_SENDFILE="False" \
-    ODOO_DBFILTER="" \
-    ODOO_TEST_FILE="" \
-    ODOO_TEST_ENABLE="" \
-    ODOO_TEST_TAGS="" \
-    ODOO_SCREENCASTS="" \
-    ODOO_SCREENSHOTS="/tmp/odoo_tests" \
-    ODOO_LOGFILE="" \
-    ODOO_SYSLOG="" \
-    ODOO_LOG_HANDLER=":INFO" \
-    ODOO_LOG_DB="" \
-    ODOO_LOG_DB_LEVEL="warning" \
-    ODOO_LOG_LEVEL="info" \
-    ODOO_EMAIL_FROM="" \
-    ODOO_FROM_FILTER="" \
-    ODOO_SMTP_SERVER="localhost" \
-    ODOO_SMTP_PORT="25" \
-    ODOO_SMTP_SSL="" \
-    ODOO_SMTP_USER="" \
-    ODOO_SMTP_PASSWORD="" \
-    ODOO_SMTP_SSL_CERTIFICATE_FILENAME="" \
-    ODOO_SMTP_SSL_PRIVATE_KEY_FILENAME="" \
-    ODOO_DB_NAME="" \
-    ODOO_DB_USER="" \
-    ODOO_DB_PASSWORD="" \
-    ODOO_PG_PATH="" \
-    ODOO_DB_HOST="" \
-    ODOO_DB_REPLICA_HOST="" \
-    ODOO_DB_PORT="" \
-    ODOO_DB_REPLICA_PORT="" \
-    ODOO_DB_SSLMODE="prefer" \
-    ODOO_DB_MAXCONN="64" \
-    ODOO_DB_MAXCONN_GEVENT="" \
-    ODOO_DB_TEMPLATE="template0" \
-    ODOO_LOAD_LANGUAGE="" \
-    ODOO_LANGUAGE="" \
-    ODOO_TRANSLATE_OUT="" \
-    ODOO_TRANSLATE_IN="" \
-    ODOO_OVERWRITE_EXISTING_TRANSLATIONS="" \
-    ODOO_TRANSLATE_MODULES="" \
-    ODOO_LIST_DB="True" \
-    ODOO_DEV_MODE="" \
-    ODOO_SHELL_INTERFACE="" \
-    ODOO_STOP_AFTER_INIT="False" \
-    ODOO_OSV_MEMORY_COUNT_LIMIT="0" \
-    ODOO_TRANSIENT_AGE_LIMIT="1.0" \
-    ODOO_MAX_CRON_THREADS="2" \
-    ODOO_LIMIT_TIME_WORKER_CRON="0" \
-    ODOO_UNACCENT="False" \
     ODOO_GEOIP_CITY_DB="/usr/share/GeoIP/GeoLite2-City.mmdb" \
     ODOO_GEOIP_COUNTRY_DB="/usr/share/GeoIP/GeoLite2-Country.mmdb" \
-    ODOO_WORKERS="0" \
-    ODOO_LIMIT_MEMORY_SOFT="2147483648" \
-    ODOO_LIMIT_MEMORY_SOFT_GEVENT="False" \
-    ODOO_LIMIT_MEMORY_HARD="2684354560" \
-    ODOO_LIMIT_MEMORY_HARD_GEVENT="False" \
-    ODOO_LIMIT_TIME_CPU="60" \
-    ODOO_LIMIT_TIME_REAL="120" \
-    ODOO_LIMIT_TIME_REAL_CRON="-1" \
-    ODOO_LIMIT_REQUEST="65536" \
-    IMAGE_SECRETS_DIR="/run/secrets" \
-    IMAGE_ODOO_ENTERPRISE_LOCATION="/volumes/enterprise"
+    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ```
 
 ## Building Default Configuration into the Image
@@ -684,6 +627,10 @@ ENV ODOO_WORKERS=5
 ```
 
 ## Setup Hook
+> [!TIP]
+> This feature is useful for automatically installing apps when the container first starts
+>
+> > [See our example hook_setup.sh script](https://github.com/adomi-io/listing-lab/blob/master/hooks/hook_setup.sh) from [Listing Lab](https://github.com/adomi-io/listing-lab/tree/master)
 
 When the image starts, it processes all the environment variables and their defaults to generate a `_generated.conf` file. 
 
@@ -691,15 +638,20 @@ Once that's done—but before Odoo launches—the entrypoint invokes a script lo
 
 Use this hook to run any custom bash commands right before Odoo starts up. Simply mount your script to `/hook_setup`.
 
-*Note:* This script runs even if you’re using the image as a command-line utility (e.g., `scaffold`) and executes before the `wait-for-psql` script, so it doesn't guarantee that the database is reachable.
+> [!INFO]
+> This script runs even if you’re using the image as a command-line
+> utility (e.g., `scaffold`) and executes before the `wait-for-psql`
+> script, so it doesn't guarantee that the database is reachable.
 
 # Development with this image
 
-You can use this image as a development environment, and debug your code. This assumes you have the [PyCharm
-Odoo](https://plugins.jetbrains.com/plugin/13499-odoo) plugin by Trịnh Anh Ngọc. 
+You can use this image as a development environment and debug and test your code. 
+This assumes you have the [PyCharm Odoo](https://plugins.jetbrains.com/plugin/13499-odoo) plugin by Trịnh Anh Ngọc. 
 
 If you dont already have it, consider it, its excellent!
 
+> [!INFO]
+> Expand this section for detailed instructions on how to use this image with your IDE
 
 <details><summary>Use this image as a development environment w/ Breakpoints</summary>
 
@@ -707,70 +659,12 @@ If you dont already have it, consider it, its excellent!
 
 Follow the [Docker Compose](#docker-compose) setup. This will mount your `./addons` folder into the image so that your changes are reflected immediately in Odoo.
 
-> **Note:** For certain changes (e.g., UI updates), you'll need to go to `Apps` and update your app.
+> [!NOTE] 
+> For certain changes (e.g., UI updates), you'll need to go to `Apps` and update your app.
 
 You can also use the virtual environment (`venv`) inside the image for debugging and setting breakpoints in PyCharm.
 
-#### Considerations
-
-Debugging in PyCharm uses `odoo-bin` directly, bypassing our entrypoint script. It's best to run the database in a separate `docker-compose.yml` file.
-
-Create a `docker-compose-db.yml` file that contains just the database:
-
-```yaml
-services:
-  db:
-    image: postgres:13
-    image_name: odoo_db
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-odoo}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-test}
-      POSTGRES_DB: ${POSTGRES_DATABASE:-postgres}
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-volumes:
-  pg_data:
-```
-
-Start the database with:
-
-```shell
-docker compose -f docker-compose-db.yml up
-```
-
-Then, create another file to run Odoo, named `docker-compose.yml`:
-
-```yaml
-services:
-  odoo:
-    build:
-      context: ./src
-      dockerfile: Dockerfile
-    ports:
-      - "8069:8069"
-    environment:
-      ODOO_DB_HOST: ${DB_HOST:-db}
-      ODOO_DB_PORT: ${DB_PORT:-5432}
-      ODOO_DB_USER: ${DB_USER:-odoo}
-      ODOO_DB_PASSWORD: ${DB_PASSWORD:-odoo}
-    volumes:
-      - ./src/odoo.conf:/volumes/config/odoo.conf
-      - ./addons:/volumes/addons
-      - odoo_data:/volumes/data
-      # Uncomment this to add enterprise at run-time:
-      # - ./enterprise:/volumes/enterprise
-
-    # This lets the image talk to software running on the host machine
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
-volumes:
-  odoo_data:
-```
-
-#### Adding the venv as an Interpreter in PyCharm
+## Adding the venv as an Interpreter in PyCharm
 
 1. Go to **File → Settings → Project → Python Interpreter**.
 2. Click **Add Interpreter** and select **On Docker Compose**.
@@ -788,7 +682,7 @@ volumes:
 5. Click **Create**.
 
 
-#### Adding a Debug Configuration
+## Adding a Debug Configuration
 
 1. Click the targets and edit the current configurations.
 
@@ -800,8 +694,6 @@ volumes:
 
 3. Set the interpreter to the one you just set up. The `odoo-bin` file is located at `/odoo/odoo-bin`.
 
-   > **Note:** This bypasses the `entrypoint.sh` script, so you need to set `db_host`, `db_user`, `db_password`, etc. manually in the `odoo-bin` arguments, or mount a hard-coded configuration file to `/volumes/config/_generated.conf` if you want to change settings while debugging.
-
 4. Add the path mapping from `./addons` to `/volumes/addons`.
 
 5. Click **OK**, then click the **Debug** button. You can now set breakpoints and debug your code.
@@ -809,7 +701,7 @@ volumes:
 
 ## Debugging the Generated Config
 
-The `odoo.conf` file is processed through `envsubst` and output to `/volumes/config/_generated.conf`. If you need to inspect the final configuration, simply mount the `/volumes/config` folder to your host.
+The `odoo.conf` file is processed through `envsubst` and output to `/volumes/config/_generated.conf`. If you need to inspect the final configuration, mount the `/volumes/config` folder to your host.
 
 For example, move your config file to `./config/odoo.conf` in your project, then update your Docker Compose configuration to mount the `./config` folder:
 
@@ -824,6 +716,8 @@ services:
 
 When the image starts, a `_generated.conf` file will appear in the `./config` folder, 
 showing the final configuration used by Odoo.
+
+
 # Maintaining This Repository
 
 ## Adding a New Version of Odoo
@@ -835,8 +729,6 @@ When a new version is released, create a branch in this repository with the same
 Then, add the branch name to the [docker-publish.yml](./.github/workflows/docker-publish.yml) file under the `strategy/matrix/branch` section.
 
 The resulting image will be automatically built, unit-tested, deployed, and scheduled for nightly builds.
-
-
 
 ## Testing
 
@@ -852,7 +744,7 @@ To run these tests, clone the repository:
 git clone git@github.com:adomi-io/odoo.git
 ```
 
-Then, navigate to the tests folder:
+Then, navigate to the `tests` folder:
 
 ```sh
 cd odoo/tests
