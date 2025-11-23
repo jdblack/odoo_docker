@@ -502,22 +502,6 @@ limit_time_real = $ODOO_LIMIT_TIME_REAL
 
 # Overriding configuration options at runtime
 
-
-## Docker
-
-Simply set the configuration options using the `-e` flag, prefixing the option name with `ODOO_`. For example, to set the number of workers:
-
-```shell
-docker run --name odoo \
-  -p 8069:8069 \
-  -e ODOO_DB_HOST=odoo_db \
-  -e ODOO_DB_PORT=5432 \
-  -e ODOO_DB_USER=odoo \
-  -e ODOO_DB_PASSWORD=odoo \
-  -e ODOO_WORKERS=5 \
-  ghcr.io/adomi-io/odoo:19.0
-```
-
 ## Docker Compose
 
 You can also set these options in your `docker-compose.yml` file:
@@ -536,6 +520,22 @@ services:
       # For example, setting the number of workers:
       ODOO_WORKERS: 5
 ```
+
+## Docker
+
+Simply set the configuration options using the `-e` flag, prefixing the option name with `ODOO_`. For example, to set the number of workers:
+
+```shell
+docker run --name odoo \
+  -p 8069:8069 \
+  -e ODOO_DB_HOST=odoo_db \
+  -e ODOO_DB_PORT=5432 \
+  -e ODOO_DB_USER=odoo \
+  -e ODOO_DB_PASSWORD=odoo \
+  -e ODOO_WORKERS=5 \
+  ghcr.io/adomi-io/odoo:19.0
+```
+
 # Create your own dynamic `odoo.conf`
 
 ## Step 1: Create an `odoo.conf` File
@@ -633,7 +633,7 @@ Once that's done—but before Odoo launches—the entrypoint invokes a script lo
 
 Use this hook to run any custom bash commands right before Odoo starts up. Simply mount your script to `/hook_setup`.
 
-> [!INFO]
+> [!NOTE]
 > This script runs even if you’re using the image as a command-line
 > utility (e.g., `scaffold`) and executes before the `wait-for-psql`
 > script, so it doesn't guarantee that the database is reachable.
@@ -645,7 +645,7 @@ This assumes you have the [PyCharm Odoo](https://plugins.jetbrains.com/plugin/13
 
 If you dont already have it, consider it, its excellent!
 
-> [!INFO]
+> [!NOTE]
 > Expand this section for detailed instructions on how to use this image with your IDE
 
 <details><summary>Use this image as a development environment w/ Breakpoints</summary>
