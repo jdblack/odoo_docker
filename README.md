@@ -627,16 +627,16 @@ ENV ODOO_WORKERS=5
 >
 > [**See our example hook_setup.sh script**](https://github.com/adomi-io/listing-lab/blob/master/hooks/hook_setup.sh) from [**Listing Lab**](https://github.com/adomi-io/listing-lab/tree/master)
 
+> [!NOTE]
+> This script runs even if you’re using the image as a command-line
+> utility (e.g., `scaffold`) and executes before the `wait-for-psql`
+> script, so it doesn't guarantee that the database is reachable.
+
 When the image starts, it processes all the environment variables and their defaults to generate a `_generated.conf` file. 
 
 Once that's done—but before Odoo launches—the entrypoint invokes a script located at `/hook_setup`.
 
 Use this hook to run any custom bash commands right before Odoo starts up. Simply mount your script to `/hook_setup`.
-
-> [!NOTE]
-> This script runs even if you’re using the image as a command-line
-> utility (e.g., `scaffold`) and executes before the `wait-for-psql`
-> script, so it doesn't guarantee that the database is reachable.
 
 # Development with this image
 
