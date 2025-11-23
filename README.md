@@ -11,12 +11,6 @@
 
 # Adomi-io - Odoo
 
-> [!WARNING]
-> This is not the official Odoo image. This image is a community-maintained Odoo image.
-> For those seeking the official image, please visit 
-> 
-> **[odoo/docker](https://github.com/odoo/docker)**
-
 This image is designed for developers, infrastructure teams, and companies that want to deploy 
 Odoo on cloud platforms, build SaaS or IaaS products around it, or use Odoo as the foundation 
 for their own custom software.
@@ -35,6 +29,12 @@ without surprise differences between environments.
 > Adomi is an Odoo partner and consulting company. This image serves as a foundation for our open-source Odoo projects.
 > We offer custom software development, consulting, tools, and training services built
 > for modern software development teams using open-source tools.
+
+> [!WARNING]
+> This is not the official Odoo image. This image is a community-maintained Odoo image.
+> For those seeking the official image, please visit 
+> 
+> **[odoo/docker](https://github.com/odoo/docker)**
 
 # Highlights
 
