@@ -15,7 +15,8 @@ Odoo on cloud platforms, build SaaS or IaaS products around it, or use Odoo as t
 for their own custom software.
 
 This image exists to turn Odoo into a repeatable, shippable unit.
-It allows you to fully own your Odoo deployments.
+It allows you to fully own your Odoo deployments. We encourage you to fork this 
+repository and customize it to your needs.
 
 Your code, your addons, your config, mounted into this image 
 will allow you to build a production-ready image which runs the same on a laptop, 
@@ -27,7 +28,9 @@ copy of Odoo, and they can be sure their code will run in production exactly the
 as on their local machine.
 
 When you are ready to deploy, you can push your code with CI/CD to any Docker repository provider,
-and the same image goes to your cloud or on-premise deployments, without surprise differences between environments. 
+and the same image goes to your cloud or on-premise deployments, without surprise differences between environments.
+
+
 
 > [!NOTE]
 > Adomi is an Odoo partner and consulting company. This image serves as a foundation for our open-source Odoo projects.
