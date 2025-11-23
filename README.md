@@ -634,9 +634,11 @@ ENV ODOO_WORKERS=5
 
 When the image starts, it processes all the environment variables and their defaults to generate a `_generated.conf` file. 
 
-Once that's done—but before Odoo launches—the entrypoint invokes a script located at `/hook_setup`.
+Once that's done, but before Odoo launches, the entrypoint invokes a script located at `/hook_setup`.
 
-Use this hook to run any custom bash commands right before Odoo starts up. Simply mount your script to `/hook_setup`.
+Use this hook to run any custom bash commands right before Odoo starts up. 
+
+Mount your script to `/hook_setup`.
 
 # Development with this image
 
