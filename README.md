@@ -14,15 +14,20 @@ This image is designed for developers, infrastructure teams, and companies that 
 Odoo on cloud platforms, build SaaS or IaaS products around it, or use Odoo as the foundation 
 for their own custom software.
 
-This image exists to turn Odoo into a repeatable, shippable unit. 
-Your code, your addons, your config, all baked into one container 
-that runs the same on a laptop, a staging box, or a cloud cluster 
-which you can deploy with a single command.
+This image exists to turn Odoo into a repeatable, shippable unit.
+It allows you to fully own your Odoo deployments.
+
+Your code, your addons, your config, mounted into this image 
+will allow you to build a production-ready image which runs the same on a laptop, 
+a staging box, or a cloud cluster, for one customer or a thousand. 
 
 You get a clean development environment that works with modern IDEs, 
-supports breakpoints, and mirrors production. When you are ready to 
-deploy, the same image goes to your cloud or on-premise deployments, 
-without surprise differences between environments.
+supports breakpoints, and mirrors production. Every developer can have their own local
+copy of Odoo, and they can be sure their code will run in production exactly the same way
+as on their local machine.
+
+When you are ready to deploy, you can push your code with CI/CD to any Docker repository provider,
+and the same image goes to your cloud or on-premise deployments, without surprise differences between environments. 
 
 > [!NOTE]
 > Adomi is an Odoo partner and consulting company. This image serves as a foundation for our open-source Odoo projects.
