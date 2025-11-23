@@ -24,10 +24,10 @@ supports breakpoints, and mirrors production. When you are ready to
 deploy, the same image goes to your cloud or on-premise deployments, 
 without surprise differences between environments.
 
-> [!TIP]
+> [!NOTE]
 > Adomi is an Odoo partner and consulting company. This image serves as a foundation for our open-source Odoo projects.
 > We offer custom software development, consulting, tools, and training services built
-> for modern software development teams using open-source tools.
+> for modern software development teams using open-source software and methodologies
 
 > [!WARNING]
 > This is not the official Odoo image. This image is a community-maintained Odoo image.
