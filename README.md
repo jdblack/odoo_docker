@@ -170,10 +170,15 @@ docker pull ghcr.io/adomi-io/odoo:19.0
 | [18.0](https://github.com/adomi-io/odoo/tree/18.0) | ```docker pull ghcr.io/adomi-io/odoo:18.0``` |
 
 # Configure your container
-Manage your configuration in a `.env` file.
+> [!TIP]
+> This lets you run multiple different environments (e.g., development, staging, production) with ease.
+> For example, you can create a `.env.production` file for production deployments.
 
 > [!TIP]
->  This lets you run multiple different environments (e.g., development, staging, production) with ease.
+> If you use Docker BuildKit, you do not need to specify the `env_file` 
+> directive in your `docker-compose.yml` file if the file is named `.env`.
+
+Manage your configuration in a `.env` file.
 
 By placing your sensitive data in this file and adding it to your `.gitignore`, 
 you keep secrets out of your command line and source code.
@@ -200,13 +205,6 @@ When you run `docker compose up`, Docker Compose will load the environment varia
 
 Using an `.env` file makes it easy to manage environment-specific settings and ensures your sensitive data isn’t hard-coded into your commands or configuration files. 
 
-> [!TIP]
-> You can change the .env file to quickly change between environments or customers.
-> For example, you can create a `.env.production` file for production deployments.
-
-> [!TIP]
-> If you use Docker BuildKit, you do not need to specify the `env_file` 
-> directive in your `docker-compose.yml` file if the file is named `.env`.
 
 ## Docker
 
@@ -236,6 +234,9 @@ You can use multiple `.env` files to separate configuration for different enviro
 
 ## Using Secret Files
 
+> [!NOTE]
+> The file name is case-insensitive inside the image. odoo_db_password and ODOO_DB_PASSWORD are equivalent.
+
 Keep your sensitive data secure by mounting secret files into `/run/secrets/`. 
 
 Create a file named after the environment variable you want to set. 
@@ -244,11 +245,8 @@ For example, to set `ODOO_DB_PASSWORD`, create a file named `ODOO_DB_PASSWORD` c
 
 This approach lets you securely load any configuration option from a file.
 
-> [!TIP]
-> the file name is case-insensitive inside the image
-
 ### Docker Compose
-Docker Compose supports secret files natively. Create a file (e.g., `odoo_db_password.txt`) and reference it in your `docker-compose.yml`:
+Docker Compose supports secret files natively. Create a file (e.g., `odoo_db_password`) and reference it in your `docker-compose.yml`:
 
 ```yaml
 services:
@@ -297,7 +295,6 @@ This command drops you right into the image's shell for quick debugging or tweak
 > [!TIP]
 > Want to see a project which extends with this image? 
 > Check out [Listing Lab](https://github.com/adomi-io/listing-lab) for a complete example
-
 
 Customize your own image by setting default environment variables,
 baking your Odoo config, and adding your custom addons. 
