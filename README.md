@@ -391,7 +391,7 @@ docker compose up --build
 
 ## Downloaded Enterprise 
 
-If you're not an Odoo Partner but have a valid Enterprise license, you can download Enterprise from [Odoo Downloads](https://www.odoo.com/page/download). Here's how:
+If you're not an Odoo Partner but have a valid Enterprise license, you can download Enterprise from [Odoo Downloads](https://www.odoo.com/page/download).
 
 1. **Download:** Grab the Enterprise file from the "Sources" row.
 2. **Extract & Rename:** Extract the file, navigate to the `/odoo` directory, and rename the `addons` folder to `enterprise`.
@@ -409,10 +409,8 @@ COPY ./enterprise /volumes/enterprise
 Then, build and run your image:
 
 ```sh
-docker compose build && docker compose up
+docker compose up --build
 ```
-
-*Note: Feel free to adjust the `COPY` command if your Enterprise code is stored elsewhere—placing it in the `enterprise` folder is just one option.*
 
 ## Extra Addons
 
@@ -442,6 +440,9 @@ COPY ./oca/addons /volumes/extra_addons
 This documentation will guide you through extending your Odoo instances configuration.
 
 ## Default Odoo Configuration File
+
+> [!TIP]
+> You can enable any configuration option to be driven by environment variables by uncommenting it in the [`odoo.conf`](./src/odoo.conf) file.
 
 This image includes a default Odoo configuration that you can override, modify, or hardcode as needed.
 
@@ -502,9 +503,6 @@ limit_time_real = $ODOO_LIMIT_TIME_REAL
 ```
 
 # Overriding configuration options at runtime
-
-> [!TIP]
-> You can enable any configuration option to be driven by environment variables by uncommenting it in the [`odoo.conf`](./src/odoo.conf) file.
 
 
 ## Docker
@@ -629,7 +627,7 @@ ENV ODOO_WORKERS=5
 > [!TIP]
 > This feature is useful for automatically installing apps when the container first starts
 >
-> > [See our example hook_setup.sh script](https://github.com/adomi-io/listing-lab/blob/master/hooks/hook_setup.sh) from [Listing Lab](https://github.com/adomi-io/listing-lab/tree/master)
+> [**See our example hook_setup.sh script**](https://github.com/adomi-io/listing-lab/blob/master/hooks/hook_setup.sh) from [**Listing Lab**](https://github.com/adomi-io/listing-lab/tree/master)
 
 When the image starts, it processes all the environment variables and their defaults to generate a `_generated.conf` file. 
 
