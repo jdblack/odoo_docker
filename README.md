@@ -31,7 +31,7 @@ without surprise differences between environments.
 > 
 > **[odoo/docker](https://github.com/odoo/docker)**
 
-> [!INFO]
+> [!TIP]
 > Adomi is an Odoo partner and consulting company. This image serves as a foundation for our open-source Odoo projects.
 > We offer custom software development, consulting, tools, and training services built
 > for modern software development teams using open-source tools.
