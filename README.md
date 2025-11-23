@@ -1,12 +1,11 @@
-
-<p align="center">
-    <img src="static/repo_header_final.png" width="580" />
-</p>
-
 > [!TIP]
 > Want to see a project build with this image? 
 > Check out [Listing Lab](https://github.com/adomi-io/listing-lab) for a complete example
 
+
+<p align="center">
+    <img src="static/repo_header_final.png" width="580" />
+</p>
 
 
 # Adomi-io - Odoo
