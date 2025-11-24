@@ -59,8 +59,6 @@ done
 # Get the first argument to the script or use default config
 CONFIG_FILE="${1:-$(pwd)/../src/odoo.conf}"
 
-echo "${CONFIG_FILE}"
-
 # Test the docker container
 
 # By default, we should ignore the /volumes/addons folder since at build time
