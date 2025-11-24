@@ -657,8 +657,6 @@ If you dont already have it, consider it, its excellent!
 <details><summary>Use this image as a development environment w/ Breakpoints</summary>
 
 ## Docker Compose
-> [!NOTE] 
-> For certain changes (e.g., UI updates), you'll need to go to `Apps` and update your app.
 
 Follow the [Docker Compose](#docker-compose) setup. This will mount your `./addons` folder into the image so that your changes are reflected immediately in Odoo.
 
