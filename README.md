@@ -646,22 +646,21 @@ Mount your script to `/hook_setup`.
 
 # Development with this image
 
+> [!NOTE]
+> Expand this section for detailed instructions on how to use this image with your IDE
+
 You can use this image as a development environment and debug and test your code. 
 This assumes you have the [PyCharm Odoo](https://plugins.jetbrains.com/plugin/13499-odoo) plugin by Trịnh Anh Ngọc. 
 
 If you dont already have it, consider it, its excellent!
 
-> [!NOTE]
-> Expand this section for detailed instructions on how to use this image with your IDE
-
 <details><summary>Use this image as a development environment w/ Breakpoints</summary>
 
 ## Docker Compose
-
-Follow the [Docker Compose](#docker-compose) setup. This will mount your `./addons` folder into the image so that your changes are reflected immediately in Odoo.
-
 > [!NOTE] 
 > For certain changes (e.g., UI updates), you'll need to go to `Apps` and update your app.
+
+Follow the [Docker Compose](#docker-compose) setup. This will mount your `./addons` folder into the image so that your changes are reflected immediately in Odoo.
 
 You can also use the virtual environment (`venv`) inside the image for debugging and setting breakpoints in PyCharm.
 
