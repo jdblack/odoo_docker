@@ -175,7 +175,6 @@ docker pull ghcr.io/adomi-io/odoo:19.0
 | Odoo                                               | Pull Command                                 |
 |----------------------------------------------------|----------------------------------------------|
 | [19.0](https://github.com/adomi-io/odoo/tree/19.0) | ```docker pull ghcr.io/adomi-io/odoo:19.0``` |
-| [18.0](https://github.com/adomi-io/odoo/tree/18.0) | ```docker pull ghcr.io/adomi-io/odoo:18.0``` |
 
 # Configure your container
 > [!TIP]
