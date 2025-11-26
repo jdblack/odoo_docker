@@ -1,0 +1,85 @@
+#!/bin/bash -e
+
+main() {
+  source AppVersion.txt
+
+  case $1 in
+    help)
+      echo "You provided an unrecognized command: $1"
+      echo "Available commands: release, build"
+      ;;
+    release)
+      local next_patch=$((patch + 1))
+      local next_version="${major}.${minor}.${next_patch}"
+      do_build 
+      update_versions "$next_version" "$next_patch"
+      publish_docker "$APP_NAME" "$version" "$DOCKER_REGISTRIES"
+      publish_helm_chart "$APP_NAME" "$version" "$HELM_REGISTRIES"
+      commit_to_git "$next_version"
+      ;;
+    build|*)
+      do_build
+      ;;
+  esac
+}
+
+
+
+function do_build() {
+  docker buildx build --rm --platform linux/amd64 -t "${APP_NAME}:dev" src
+  for REGISTRY in ${registries//,/ }; do
+    docker tag "${APP_NAME}:dev" "${REGISTRY}/${APP_NAME}:dev"
+    docker push "${REGISTRY}/${APP_NAME}:dev"
+  done
+  echo "=============================================="
+  echo -e "\033[32mDocker dev image builtl. To publish it, commit to git and run: \033[33m  ./build publish\033[0m"
+  echo "=============================================="
+  git diff --stat
+}
+
+function commit_to_git() {
+  local version="$1"
+  git add -A
+  git commit -m "publish Version $next_verison"
+}
+# Function to update Chart.yaml with the new version
+function update_versions() {
+  local version="$1"
+  local next_patch="$2"
+  sed -i.bak "s/^PATCH=.*/PATCH=${next_patch}/" AppInfo.txt
+  sed -i.bak "s/version: .*/version: ${version}/" chart/Chart.yaml
+  sed -i.bak "s/appVersion: .*/appVersion: v${version}/" chart/Chart.yaml
+}
+
+# Function to push Docker images to registries
+function publish_docker() {
+  local app_name="$1"
+  local version="$2"
+  local registries="$3"
+  for REGISTRY in ${registries//,/ }; do
+    docker tag "${app_name}:dev" "${REGISTRY}/${app_name}:latest"
+    docker tag "${app_name}:dev" "${REGISTRY}/${app_name}:v${version}"
+    docker push "${REGISTRY}/${app_name}:latest"
+    docker push "${REGISTRY}/${app_name}:v${version}"
+  done
+}
+
+# Function to push Helm chart to registry
+function publish_helm_chart() {
+  local app_name="$1"
+  local version="$2"
+  local registries="$3"
+  helm package chart
+  for REGISTRY in ${registries//,/ }; do
+    CHART_PACKAGE="${app_name}-chart-${version}.tgz"
+    if [[ -f "$CHART_PACKAGE" ]]; then
+      helm push "$CHART_PACKAGE" "oci://$REGISTRY"
+      echo "Pushed Helm chart to ${REGISTRY}"
+    else
+      echo "Error: Chart package ${CHART_PACKAGE} not found!" >&2
+    fi
+  done
+}
+
+main "$@"
+
