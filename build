@@ -40,7 +40,7 @@ function do_build() {
 function commit_to_git() {
   local version="$1"
   git add -A
-  git commit -m "publish Version $next_verison"
+  git commit -m "publish Version $next_version"
 }
 # Function to update Chart.yaml with the new version
 function update_versions() {
